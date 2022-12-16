@@ -10,7 +10,7 @@ const getBooks = (req, res) => {
 };
 
 const getBookById = (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   pool.query(getBookByIdQuery, [id], (err, result) => {
     if (err) res.send(err);
     if (!result.rows.length) {
@@ -27,7 +27,7 @@ const addBook = (req, res) => {
     `INSERT INTO books (name, author, description, publisher, isbn)
      VALUES ($1, $2, $3, $4, $5)`,
     [name, author, description, publisher, isbn],
-    (err, result) => {
+    (err) => {
       if (err) res.send(err);
       else {
         res.status(200).send("Berhasil menambah buku");
@@ -37,7 +37,7 @@ const addBook = (req, res) => {
 };
 
 const updateBook = (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   const { name, author, description, publisher, isbn } = req.body;
 
   pool.query(getBookByIdQuery, [id], (err, result) => {
@@ -51,8 +51,8 @@ const updateBook = (req, res) => {
      name=$2, author=$3, description=$4, publisher=$5, isbn=$6
       WHERE id = $1`,
       [id, name, author, description, publisher, isbn],
-      (err, result) => {
-        if (err) res.send(err);
+      (error) => {
+        if (error) res.send(error);
 
         res.status(200).send("Berhasil mengubah data buku");
       }
@@ -61,15 +61,15 @@ const updateBook = (req, res) => {
 };
 
 const deleteBook = (req, res) => {
-  const id = parseInt(req.params.id);
+  const id = parseInt(req.params.id, 10);
   pool.query(getBookByIdQuery, [id], (err, result) => {
     const noBookFound = !result.rows.length;
     if (noBookFound) {
       res.send("Buku tidak ada");
     }
 
-    pool.query(`DELETE FROM books WHERE id = $1`, [id], (err, result) => {
-      if (err) res.send(err);
+    pool.query(`DELETE FROM books WHERE id = $1`, [id], (error) => {
+      if (error) res.send(error);
 
       res.status(200).send("Berhasil menghapus buku");
     });

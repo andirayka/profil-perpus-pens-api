@@ -17,6 +17,6 @@ module.exports = {
         endOfLine: "auto",
       },
     ],
-    "import/no-unresolved": "warn",
+    "no-unused-vars": "warn",
   },
 };

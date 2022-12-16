@@ -3,4 +3,6 @@ const controller = require("./controller");
 
 const router = Router();
 
-module.exports = router
+router.get("/login", controller.login);
+
+module.exports = router;

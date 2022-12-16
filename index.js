@@ -1,9 +1,9 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 require("dotenv").config();
-const pool = require("./db");
+// const pool = require("./db");
 
 const bookRoutes = require("./src/book/routes");
+const authRoutes = require("./src/auth/routes");
 
 const app = express();
 const port = process.env.PORT;
@@ -17,8 +17,10 @@ const port = process.env.PORT;
 // });
 app.use(express.json());
 app.use("/books", bookRoutes);
+app.use("/auth", authRoutes);
 
-app.listen(port, () => console.log("listening on port " + port));
+// eslint-disable-next-line no-console
+app.listen(port, () => console.log(`listening on port ${port}`));
 // pool.connect((err) => {
 //   if (err) {
 //     console.log(err);
