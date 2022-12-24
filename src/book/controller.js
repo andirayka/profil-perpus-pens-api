@@ -1,11 +1,17 @@
 const pool = require("../../db");
+const { resFormat } = require("../helper");
 
 const getBookByIdQuery = `SELECT * FROM books WHERE id=$1`;
 
 const getBooks = (req, res) => {
-  pool.query("SELECT * FROM books", (err, result) => {
+  const keyword = req.query?.keyword?.toLowerCase();
+  let query = "SELECT * FROM books";
+  if (keyword) {
+    query = `SELECT * from search_books('${keyword}')`;
+  }
+  pool.query(query, (err, result) => {
     if (err) res.send(err);
-    res.status(200).json(result.rows);
+    resFormat({ res, message: query, data: result.rows });
   });
 };
 
@@ -21,12 +27,13 @@ const getBookById = (req, res) => {
 };
 
 const addBook = (req, res) => {
-  const { name, author, description, publisher, isbn } = req.body;
+  const { title, author, description, publisher, isbn, tags, slug, cover } =
+    req.body;
 
   pool.query(
-    `INSERT INTO books (name, author, description, publisher, isbn)
-     VALUES ($1, $2, $3, $4, $5)`,
-    [name, author, description, publisher, isbn],
+    `INSERT INTO books (title, author, description, publisher, isbn, tags, slug, cover)
+     VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+    [title, author, description, publisher, isbn, tags, slug, cover],
     (err) => {
       if (err) res.send(err);
       else {
@@ -38,7 +45,8 @@ const addBook = (req, res) => {
 
 const updateBook = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { name, author, description, publisher, isbn } = req.body;
+  const { title, author, description, publisher, isbn, tags, slug, cover } =
+    req.body;
 
   pool.query(getBookByIdQuery, [id], (err, result) => {
     const noBookFound = !result.rows.length;
@@ -48,9 +56,9 @@ const updateBook = (req, res) => {
 
     pool.query(
       `UPDATE books SET
-     name=$2, author=$3, description=$4, publisher=$5, isbn=$6
+     title=$2, author=$3, description=$4, publisher=$5, isbn=$6, tags=$7, slug=$8, cover=$9
       WHERE id = $1`,
-      [id, name, author, description, publisher, isbn],
+      [id, title, author, description, publisher, isbn, tags, slug, cover],
       (error) => {
         if (error) res.send(error);
 

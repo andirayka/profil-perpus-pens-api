@@ -6,4 +6,8 @@ const slugify = (text) => {
     .replace(/[^\w-]+/g, "");
 };
 
-module.exports = { slugify };
+const resFormat = ({ res, message, data }) => {
+  res.status(200).json({ message, data });
+};
+
+module.exports = { slugify, resFormat };
