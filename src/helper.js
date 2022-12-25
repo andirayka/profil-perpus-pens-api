@@ -1,9 +1,10 @@
 const slugify = (text) => {
   return text
     .toLowerCase()
-    .replace(/ /g, "-")
-    .replace(/[-]+/g, "-")
-    .replace(/[^\w-]+/g, "");
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
 };
 
 const resFormat = ({ res, message, data }) => {

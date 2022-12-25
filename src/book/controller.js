@@ -1,5 +1,5 @@
 const pool = require("../../db");
-const { resFormat } = require("../helper");
+const { resFormat, slugify } = require("../helper");
 
 const getBookByIdQuery = `SELECT * FROM books WHERE id=$1`;
 
@@ -11,7 +11,11 @@ const getBooks = (req, res) => {
   }
   pool.query(query, (err, result) => {
     if (err) res.send(err);
-    resFormat({ res, message: query, data: result.rows });
+    resFormat({
+      res,
+      message: "Ambil data buku berhasil",
+      data: result.rows,
+    });
   });
 };
 
@@ -27,8 +31,8 @@ const getBookById = (req, res) => {
 };
 
 const addBook = (req, res) => {
-  const { title, author, description, publisher, isbn, tags, slug, cover } =
-    req.body;
+  const { title, author, description, publisher, isbn, tags, cover } = req.body;
+  const slug = slugify(title);
 
   pool.query(
     `INSERT INTO books (title, author, description, publisher, isbn, tags, slug, cover)
