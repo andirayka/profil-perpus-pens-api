@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 // const pool = require("./db");
 
@@ -16,6 +17,7 @@ const port = process.env.PORT;
 //   });
 // });
 app.use(express.json());
+app.use(cors());
 app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 
