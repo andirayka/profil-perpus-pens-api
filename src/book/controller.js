@@ -83,7 +83,10 @@ const deleteBook = (req, res) => {
     pool.query(`DELETE FROM books WHERE id = $1`, [id], (error) => {
       if (error) res.send(error);
 
-      res.status(200).send("Berhasil menghapus buku");
+      resFormat({
+        res,
+        message: "Berhasil menghapus buku",
+      });
     });
   });
 };
