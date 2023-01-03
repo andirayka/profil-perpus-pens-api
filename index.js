@@ -20,9 +20,9 @@ app.use(cors());
 app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 
-// eslint-disable-next-line no-console
 app.listen(process.env.PGPORT, () =>
-  console.log(`listening on port ${process.env.PGPORT}`)
+  // eslint-disable-next-line no-console
+  console.log(`Sedang listening on port ${process.env.PGPORT}`)
 );
 // pool.connect((err) => {
 //   if (err) {
