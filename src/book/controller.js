@@ -49,8 +49,8 @@ const addBook = (req, res) => {
 
 const updateBook = (req, res) => {
   const id = parseInt(req.params.id, 10);
-  const { title, author, description, publisher, isbn, tags, slug, cover } =
-    req.body;
+  const { title, author, description, publisher, isbn, tags, cover } = req.body;
+  const slug = slugify(title);
 
   pool.query(getBookByIdQuery, [id], (err, result) => {
     const noBookFound = !result.rows.length;
