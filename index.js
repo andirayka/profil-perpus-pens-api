@@ -6,6 +6,7 @@ require("dotenv").config();
 const bookRoutes = require("./src/book/routes");
 const authRoutes = require("./src/auth/routes");
 
+const port = process.env.PORT;
 const app = express();
 
 // app.use(bodyParser.json());
@@ -20,9 +21,9 @@ app.use(cors());
 app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 
-app.listen(process.env.PGPORT, () =>
+app.listen(port, () =>
   // eslint-disable-next-line no-console
-  console.log(`Sedang listening on port ${process.env.PGPORT}`)
+  console.log(`Sedang listening on port ${port}`)
 );
 // pool.connect((err) => {
 //   if (err) {
