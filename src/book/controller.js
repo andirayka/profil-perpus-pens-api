@@ -7,7 +7,8 @@ const getBooks = (req, res) => {
   const keyword = req.query?.keyword?.toLowerCase();
   let query = "SELECT * FROM books";
   if (keyword) {
-    query = `SELECT * from search_books('${keyword}')`;
+    query = `SELECT * from books WHERE title LIKE %${keyword}%`;
+    // query = `SELECT * from search_books('${keyword}')`;
   }
   pool.query(query, (err, result) => {
     if (err) res.send(err);

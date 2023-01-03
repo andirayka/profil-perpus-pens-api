@@ -21,7 +21,9 @@ app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 
 // eslint-disable-next-line no-console
-// app.listen(port, () => console.log(`listening on port ${port}`));
+app.listen(process.env.PGPORT, () =>
+  console.log(`listening on port ${process.env.PGPORT}`)
+);
 // pool.connect((err) => {
 //   if (err) {
 //     console.log(err);
