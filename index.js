@@ -7,7 +7,6 @@ const bookRoutes = require("./src/book/routes");
 const authRoutes = require("./src/auth/routes");
 
 const app = express();
-const port = process.env.PORT;
 
 // app.use(bodyParser.json());
 // app.get("/", (req, res) => {
@@ -22,7 +21,7 @@ app.use("/books", bookRoutes);
 app.use("/auth", authRoutes);
 
 // eslint-disable-next-line no-console
-app.listen(port, () => console.log(`listening on port ${port}`));
+// app.listen(port, () => console.log(`listening on port ${port}`));
 // pool.connect((err) => {
 //   if (err) {
 //     console.log(err);
