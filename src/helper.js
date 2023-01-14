@@ -7,7 +7,7 @@ const slugify = (text) => {
     .replace(/^-+|-+$/g, "");
 };
 
-const resFormat = ({ res, message, data }) => {
+const resFormat = ({ res, message, data = {} }) => {
   res.status(200).json({ message, data });
 };
 

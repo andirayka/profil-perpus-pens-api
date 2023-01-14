@@ -20,6 +20,20 @@ const getBooks = (req, res) => {
   });
 };
 
+const getExactBook = (req, res) => {
+  const { keyword } = req.params;
+  // console.log(keyword);
+
+  pool.query(`SELECT * from books`, (err, result) => {
+    if (err) res.send({ data: [] });
+    resFormat({
+      res,
+      message: "Ambil data buku berhasil",
+      data: result.rows,
+    });
+  });
+};
+
 const getBookById = (req, res) => {
   const id = parseInt(req.params.id, 10);
   pool.query(getBookByIdQuery, [id], (err, result) => {
@@ -40,9 +54,16 @@ const addBook = (req, res) => {
      VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
     [title, author, description, publisher, isbn, tags, slug, cover],
     (err) => {
-      if (err) res.send(err);
-      else {
-        res.status(200).send("Berhasil menambah buku");
+      if (err) {
+        resFormat({
+          res,
+          message: "Gagal menambah buku",
+        });
+      } else {
+        resFormat({
+          res,
+          message: "Berhasil menambah buku",
+        });
       }
     }
   );
@@ -65,9 +86,16 @@ const updateBook = (req, res) => {
       WHERE id = $1`,
       [id, title, author, description, publisher, isbn, tags, slug, cover],
       (error) => {
-        if (error) res.send(error);
-
-        res.status(200).send("Berhasil mengubah data buku");
+        if (error) {
+          resFormat({
+            res,
+            message: "Gagal mengubah data buku",
+          });
+        }
+        resFormat({
+          res,
+          message: "Berhasil mengubah data buku",
+        });
       }
     );
   });
@@ -82,7 +110,12 @@ const deleteBook = (req, res) => {
     }
 
     pool.query(`DELETE FROM books WHERE id = $1`, [id], (error) => {
-      if (error) res.send(error);
+      if (error) {
+        resFormat({
+          res,
+          message: "Gagal menghapus buku",
+        });
+      }
 
       resFormat({
         res,
@@ -98,4 +131,5 @@ module.exports = {
   addBook,
   updateBook,
   deleteBook,
+  getExactBook,
 };

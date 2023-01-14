@@ -51,6 +51,7 @@ router.post(
     }
   }
 );
+router.get("/exactbook/:keyword", controller.getExactBook);
 router.get("/:id", controller.getBookById);
 router.post("/", controller.addBook);
 router.put("/:id", controller.updateBook);
