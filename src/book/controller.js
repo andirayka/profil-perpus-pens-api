@@ -11,12 +11,19 @@ const getBooks = (req, res) => {
     // query = `SELECT * from search_books('${keyword}')`;
   }
   pool.query(query, (err, result) => {
-    if (err) res.send(err);
-    resFormat({
-      res,
-      message: "Ambil data buku berhasil",
-      data: result.rows,
-    });
+    if (err) {
+      resFormat({
+        res,
+        message: "Ambil data buku gagal",
+        data: [],
+      });
+    } else {
+      resFormat({
+        res,
+        message: "Ambil data buku berhasil",
+        data: result.rows,
+      });
+    }
   });
 };
 
@@ -37,11 +44,26 @@ const getExactBook = (req, res) => {
 const getBookById = (req, res) => {
   const id = parseInt(req.params.id, 10);
   pool.query(getBookByIdQuery, [id], (err, result) => {
-    if (err) res.send(err);
+    if (err)
+      resFormat({
+        res,
+        message: "Ambil detail buku gagal",
+        data: [],
+      });
     if (!result.rows.length) {
-      res.send("Buku tidak ada");
+      resFormat({
+        res,
+        message: "Buku tidak ada",
+        data: [],
+      });
+      // res.send("Buku tidak ada");
     }
-    res.status(200).json(result.rows);
+    resFormat({
+      res,
+      message: "Ambil detail buku berhasil",
+      data: result.rows,
+    });
+    // res.status(200).json(result.rows);
   });
 };
 
@@ -77,7 +99,11 @@ const updateBook = (req, res) => {
   pool.query(getBookByIdQuery, [id], (err, result) => {
     const noBookFound = !result.rows.length;
     if (noBookFound) {
-      res.send("Buku tidak ada");
+      resFormat({
+        res,
+        message: "Buku tidak ada",
+        data: [],
+      });
     }
 
     pool.query(
@@ -90,11 +116,13 @@ const updateBook = (req, res) => {
           resFormat({
             res,
             message: "Gagal mengubah data buku",
+            data: [],
           });
         }
         resFormat({
           res,
           message: "Berhasil mengubah data buku",
+          data: [],
         });
       }
     );
@@ -106,7 +134,11 @@ const deleteBook = (req, res) => {
   pool.query(getBookByIdQuery, [id], (err, result) => {
     const noBookFound = !result.rows.length;
     if (noBookFound) {
-      res.send("Buku tidak ada");
+      resFormat({
+        res,
+        message: "Buku tidak ada",
+        data: [],
+      });
     }
 
     pool.query(`DELETE FROM books WHERE id = $1`, [id], (error) => {
